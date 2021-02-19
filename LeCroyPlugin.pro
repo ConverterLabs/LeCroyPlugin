@@ -32,7 +32,7 @@ OBJECTS_DIR=$$builddir
 DESTDIR=$$builddir
 
 INCLUDEPATH += C:/libraries/boost_1_59_0
-INCLUDEPATH += $$PWD/../LeCroyPlugin/Include
+INCLUDEPATH += $$PWD/../LeCroyPlugin/include
 
 DEFINES +=  LeCroyPlugin_LIBRARY
 DEFINES +=  WIN32_LEAN_AND_MEAN
