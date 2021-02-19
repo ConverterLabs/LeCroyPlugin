@@ -72,6 +72,7 @@ bool WorkClass::Abort()
 void WorkClass::process()
 {
     this->ThreadRunning.lock();
+    Messenger.Info( DeviceName + " loaded.");
 
 
     CreateSymbols Symbols(this, DeviceName, m_data);
@@ -209,7 +210,7 @@ void WorkClass::process()
     while(!abort)
         QThread::msleep(1);
 
-
+    Messenger.Info( DeviceName + " closed.");
     this->ThreadRunning.unlock();
     emit ThreadFinished();
     Finished = true;

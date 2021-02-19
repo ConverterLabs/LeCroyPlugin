@@ -70,7 +70,7 @@ LIBS += -lws2_32
 
 TARGET          = $$qtLibraryTarget(LeCroyPlugin)
 Debug:DESTDIR         = ../../plugins
-Release:DESTDIR         = C:/LEGui
+Release:DESTDIR         = C:/LabAnalyser
 
 #QMAKE_CXXFLAGS_RELEASE += -O1
 QMAKE_CXXFLAGS_RELEASE -= -O
