@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LEDevice DevicePlugin = "LeCroyPlugin.dll" DeviceName = "LeCroyI">
+	<Connection IP = "172.16.2.1"/>
+	<!-- Commands for HD04080-->	
+	<Visa>
+		<Connection  DataType="double" Flag = "r">		
+			<ID> Acquisition::MemorySize</ID>
+			<Command> app.Acquisition.Horizontal.NumPoints</Command> 
+		</Connection>		
+		<Connection  DataType="double">		
+			<ID> Acquisition::SamplePoints</ID>
+			<Command> app.Acquisition.Horizontal.MaxSamples</Command> 
+		</Connection>	
+	    <Connection  DataType="boolean">		
+			<ID> Channel::C1::View </ID>
+			<Command> app.Acquisition.C1.View</Command> 
+		</Connection>	
+		<Connection  DataType="boolean">		
+			<ID> Channel::C2::View </ID>
+			<Command> app.Acquisition.C2.View</Command> 
+		</Connection>	
+		<Connection  DataType="boolean">		
+			<ID> Channel::C3::View </ID>
+			<Command> app.Acquisition.C3.View</Command> 
+			<Selection/>
+		</Connection>	
+		<Connection  DataType="boolean">		
+			<ID> Channel::C4::View </ID>
+			<Command> app.Acquisition.C4.View</Command> 
+			<Selection/>
+		</Connection>	
+		<Connection  DataType="boolean">		
+			<ID> Channel::C1::Invert </ID>
+			<Command> app.Acquisition.C1.Invert</Command> 
+			<Selection/>
+		</Connection>
+		<Connection  DataType="boolean">		
+			<ID> Channel::C2::Invert </ID>
+			<Command> app.Acquisition.C2.Invert</Command> 
+			<Selection/>
+		</Connection>
+		<Connection  DataType="boolean">		
+			<ID> Channel::C3::Invert </ID>
+			<Command> app.Acquisition.C3.Invert</Command> 
+			<Selection/>
+		</Connection>
+		<Connection  DataType="boolean">		
+			<ID> Channel::C4::Invert </ID>
+			<Command> app.Acquisition.C4.Invert</Command> 
+			<Selection/>
+		</Connection>
+		<Connection  DataType="double">		
+			<ID> Channel::C1::Scale </ID>
+			<Command> app.Acquisition.C1.VerScale</Command> 
+			<Selection/>
+		</Connection>
+		<Connection  DataType="double">		
+			<ID> Channel::C2::Scale </ID>
+			<Command> app.Acquisition.C2.VerScale</Command> 
+			<Selection/>
+		</Connection>
+		<Connection  DataType="double">		
+			<ID> Channel::C3::Scale </ID>
+			<Command> app.Acquisition.C3.VerScale</Command> 
+			<Selection/>
+		</Connection>
+		<Connection  DataType="double">		
+			<ID> Channel::C4::Scale </ID>
+			<Command> app.Acquisition.C4.VerScale</Command> 
+			<Selection/>
+		</Connection>
+		<Connection  DataType="GuiSelection">		
+			<ID> Trigger::Mode </ID>
+			<Command> app.Acquisition.TriggerMode</Command> 
+			<Selection>Auto</Selection>
+			<Selection>Normal</Selection>
+			<Selection>Single</Selection>
+			<Selection>Stopped</Selection>
+		</Connection>
+		<Connection  DataType="GuiSelection">		
+			<ID> Trigger::Channel </ID>
+			<Command> app.Acquisition.Trigger.Edge.Source</Command> 
+			<Selection>C1</Selection>
+			<Selection>C2</Selection>
+			<Selection>C3</Selection>
+			<Selection>C4</Selection>
+		    <Selection>Ext</Selection>
+			<Selection>Line</Selection>
+		</Connection>
+		<Connection  DataType="double" >		
+			<ID> Trigger::C1::Level </ID>
+			<Command> app.Acquisition.Trigger.C1Level</Command> 
+		</Connection>
+		<Connection  DataType="double">		
+			<ID> Trigger::C2::Level </ID>
+			<Command> app.Acquisition.Trigger.C2Level</Command> 
+		</Connection>
+		<Connection  DataType="double">		
+			<ID> Trigger::C3::Level </ID>
+			<Command> app.Acquisition.Trigger.C3Level</Command> 
+		</Connection>
+		<Connection  DataType="double">		
+			<ID> Trigger::C4::Level </ID>
+			<Command> app.Acquisition.Trigger.C4Level</Command> 
+		</Connection>
+	</Visa>
+</LEDevice>
+	
