@@ -1,6 +1,7 @@
 /***************************************************************************
 **                                                                        **
-**  This file is part of the LeCroy Plugin for LabAnlyser.                **
+**  LeCroy Plugin for LabAnlyser, control&visualize data of LeCroy Scopes.**
+**  Copyright (C) 2015-2021 Andreas Hoffmann                              **
 **                                                                        **
 **  LeCroy Plugin is free software: you can redistribute it and/or modify **
 **  it under the terms of the GNU General Public License as published by  **

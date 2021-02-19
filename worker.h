@@ -1,6 +1,6 @@
 /***************************************************************************
 **                                                                        **
-**  LeCroy Plugin for LabAnlyser, control&visualize data of LeCroy Oscis. **
+**  LeCroy Plugin for LabAnlyser, control&visualize data of LeCroy Scopes.**
 **  Copyright (C) 2015-2021 Andreas Hoffmann                              **
 **                                                                        **
 **  LeCroy Plugin is free software: you can redistribute it and/or modify **
