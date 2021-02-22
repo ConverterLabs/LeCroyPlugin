@@ -124,7 +124,7 @@ void WorkClass::process()
                 {
                     if(_data.GetDataRaw() != this->m_data[ID].GetDataRaw())
                     {
-                        this->m_data[ID].SetDataRaw(_data.GetDataRaw());
+                        //this->m_data[ID].SetDataRaw(_data.GetDataRaw());
                         if(_data.GetDataType().compare("GuiSelection")==0)
                         {
                                 this->Osci.write(this->StateSetCommands[ID] + "\"" + _data.GetGuiSelection().first + "\"'",ID);
@@ -133,8 +133,8 @@ void WorkClass::process()
                         {
                                 this->Osci.write(this->StateSetCommands[ID] + _data.GetString() + "'",ID);
                         }
-                        this->m_data[ID].SetDataRaw(_data.GetDataRaw());
-                        this->MessageSender("set", ID, _data);
+                        this->m_data[ID].SetDataTimeOut(_data.GetDataRaw(), ID, GetMessenger());
+                        //this->MessageSender("set", ID, _data);
                     }
                 }
             }
@@ -150,17 +150,20 @@ void WorkClass::process()
                     QString TDate = States[i];
                     InterfaceData _data = this->m_data[StateIds[i]];
 
+                    _data.SetDataKeepType(TDate);
+
+
                     if(_data.GetDataType().compare("GuiSelection")==0)
                     {
                         auto tmp = this->m_data[StateIds[i]].GetGuiSelection();
-                        tmp.first = States[i];
-                        _data.SetData(tmp);
+                        //tmp.first = States[i];
+                        //_data.SetData(tmp);
                     }
-                    else
-                        _data.SetData(TDate);
+                    //else
 
                     if(_data.GetDataRaw() != this->m_data[StateIds[i]].GetDataRaw())
                     {
+
                         this->m_data[StateIds[i]].SetDataRaw(_data.GetDataRaw());
                         if(_data.GetDataType().compare("GuiSelection")==0)
                         {
@@ -176,15 +179,23 @@ void WorkClass::process()
             GetMessenger()->Error("Error in Message Commands, please check the LAdev file!");
         }
 
+        if(LastTriggerMode == "Single" && this->m_data[DeviceName + "::Trigger::Mode"].GetString() == "Stopped")
+        {
+            ReadStreams = 1;
+        }
+        LastTriggerMode = this->m_data[DeviceName + "::Trigger::Mode"].GetString();
+
         if(ReadStreams)
         {
             ChannelReader.ReadChannel(1);
             ChannelReader.ReadChannel(2);
             ChannelReader.ReadChannel(3);
             ChannelReader.ReadChannel(4);
-            uint32_t tmp = m_data[DeviceName + "::Aquisition::Counter"].GetUInt32_tData();
+            QString CounterID = DeviceName + "::ChannelRead::Counter";
+            uint32_t tmp = m_data[CounterID].GetUInt32_tData();
             tmp++;
-            m_data[DeviceName + "::Aquisition::Counter"].SetDataKeepType(tmp);
+            m_data[CounterID].SetDataKeepType(tmp);
+            this->MessageSender("set", CounterID,  m_data[CounterID]);
             ReadStreams = 0;
 
         }
@@ -241,11 +252,14 @@ void WorkClass::MessageReceiver(const QString &Command, const QString &ID, Inter
 
     if(Command == "get")
     {
+        InterfaceData Dat = (this->m_data[ID]);
+        Dat.SetDataRaw(this->m_data[ID].GetData());
+        emit MessageSender("set", ID , Dat);
     }
     else if(Command == "load")
     {
         CreateSymbols Symbols(this, DeviceName, m_data);
-        XmlReader reader(this,Messenger, DeviceName,StateIds, StateRequests, StateSetCommands);
+        XmlReader reader(this,Messenger, m_data, DeviceName,StateIds, StateRequests, StateSetCommands);
         if(reader.read(Data.GetString()))
         {
             abort = true;
@@ -265,7 +279,6 @@ void WorkClass::MessageReceiver(const QString &Command, const QString &ID, Inter
     }
     else if(Command == "publish")
     {
-        this->m_data[ID] = Data;
         emit MessageSender(Command,ID,Data);
     }
     else if(Command.compare("set")==0)

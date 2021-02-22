@@ -98,6 +98,7 @@ private:
     QStringList StateIds;
     QStringList StateRequests;
     QMap<QString, QString> StateSetCommands;
+    QString LastTriggerMode;
 
     QString IP;
     LeCroy Osci;

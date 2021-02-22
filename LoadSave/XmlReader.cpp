@@ -24,13 +24,14 @@
 #include <QFile>
 #include <QDir>
 
-XmlReader::XmlReader(QObject *parent,MessengerClass & Messenger_, QString DeviceName_, QStringList &StateIds_, QStringList &StateRequests_, QMap<QString, QString> &StateSetCommands_):
+XmlReader::XmlReader(QObject *parent,MessengerClass & Messenger_, std::map<QString, DataStorage> &m_data_, QString DeviceName_, QStringList &StateIds_, QStringList &StateRequests_, QMap<QString, QString> &StateSetCommands_):
     QObject(parent),
     DeviceName(DeviceName_),
     Messenger( Messenger_),
     StateIds(StateIds_),
     StateRequests(StateRequests_),
-    StateSetCommands(StateSetCommands_)
+    StateSetCommands(StateSetCommands_),
+    m_data(m_data_)
 {
 
 }
@@ -126,6 +127,7 @@ void XmlReader::ReadString(bool ReadOnly)
         auto ID = DeviceName + "::" + read_ID.trimmed();
         StateIds.push_back(ID);
         StateSetCommands[ID] = "VBS '" + read_Command.trimmed() +"=";
+        m_data[ID] = Data;
         emit Messenger.MessageSender("publish", ID,  Data);
     }
 }
@@ -158,6 +160,7 @@ void XmlReader::ReadDouble(bool ReadOnly)
         auto ID = DeviceName + "::" + read_ID.trimmed();
         StateIds.push_back(ID);
         StateSetCommands[ID] = "VBS '" + read_Command.trimmed() +"=";
+        m_data[ID] = Data;
         emit Messenger.MessageSender("publish", ID,  Data);
     }
 }
@@ -190,6 +193,7 @@ void XmlReader::ReadBoolean(bool ReadOnly)
         auto ID = DeviceName + "::" + read_ID.trimmed();
         StateIds.push_back(ID);
         StateSetCommands[ID] = "VBS '" + read_Command.trimmed() +"=";
+        m_data[ID] = Data;
         emit Messenger.MessageSender("publish", ID,  Data);
     }
 }
@@ -228,6 +232,7 @@ void XmlReader::ReadGuiSelection(bool ReadOnly)
         auto ID = DeviceName + "::" + read_ID.trimmed();
         StateIds.push_back(ID);
         StateSetCommands[ID] = "VBS '" + read_Command.trimmed() +"=";
+        m_data[ID] = Data;
         emit Messenger.MessageSender("publish", ID,  Data);
     }
 }
@@ -259,7 +264,8 @@ void XmlReader::ReadInt(bool ReadOnly)
         StateRequests.push_back(QString("VBS? ") + QString("'Return =") + read_Command + QString("'; "));
         auto ID = DeviceName + "::" + read_ID.trimmed();
         StateIds.push_back(ID);
-        StateSetCommands[ID] = "VBS '" + read_Command.trimmed() +"=";
+        StateSetCommands[ID] = "VBS '" + read_Command.trimmed() +"=";        
+        m_data[ID] = Data;
         emit Messenger.MessageSender("publish", ID,  Data);
     }
 }
