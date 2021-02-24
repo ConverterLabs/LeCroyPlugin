@@ -34,7 +34,7 @@ void ReadOsciChannel::ReadChannel(int Channel)
 {
     QString Chan = "C" + QString::number(Channel);
     QString IDM = DeviceName + "::Acquisition::MemorySize";
-    if(this->m_data[DeviceName + "::Channel::" + Chan + "::View"].GetBool())
+    if(this->m_data[DeviceName + "::Channel::" + Chan + "::State"].GetBool())
     {
         std::vector<unsigned char> buffer = this->Osci.readbin(Chan + ":WaveForm? ALL",(int)(this->m_data[IDM].GetDouble()) + 500);
         if(buffer.size()<500)

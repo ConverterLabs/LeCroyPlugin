@@ -12,20 +12,20 @@
 			<Command> app.Acquisition.Horizontal.MaxSamples</Command> 
 		</Connection>	
 	    <Connection  DataType="boolean">		
-			<ID> Channel::C1::View </ID>
+			<ID> Channel::C1::State </ID>
 			<Command> app.Acquisition.C1.View</Command> 
 		</Connection>	
 		<Connection  DataType="boolean">		
-			<ID> Channel::C2::View </ID>
+			<ID> Channel::C2::State </ID>
 			<Command> app.Acquisition.C2.View</Command> 
 		</Connection>	
 		<Connection  DataType="boolean">		
-			<ID> Channel::C3::View </ID>
+			<ID> Channel::C3::State </ID>
 			<Command> app.Acquisition.C3.View</Command> 
 			<Selection/>
 		</Connection>	
 		<Connection  DataType="boolean">		
-			<ID> Channel::C4::View </ID>
+			<ID> Channel::C4::State </ID>
 			<Command> app.Acquisition.C4.View</Command> 
 			<Selection/>
 		</Connection>	

@@ -104,6 +104,14 @@ void WorkClass::process()
 
     this->SymbolsPublished = true;
 
+    QStringList ErrorStates = this->Osci.CheckStates(StateRequests);
+    if(ErrorStates.size())
+    {
+        for(auto itt : ErrorStates)
+            Messenger.Error("Visa Command: " + itt + " not found!");
+        Error = true;
+    }
+
 
     // First Loop
     while(!Abort())
@@ -124,17 +132,18 @@ void WorkClass::process()
                 {
                     if(_data.GetDataRaw() != this->m_data[ID].GetDataRaw())
                     {
-                        //this->m_data[ID].SetDataRaw(_data.GetDataRaw());
-                        if(_data.GetDataType().compare("GuiSelection")==0)
+                        if(this->StateSetCommands.find(ID)!=this->StateSetCommands.end())
                         {
-                                this->Osci.write(this->StateSetCommands[ID] + "\"" + _data.GetGuiSelection().first + "\"'",ID);
+                            if(_data.GetDataRaw() != this->m_data[ID].GetDataRaw())
+                            {
+                                if(_data.GetDataType().compare("GuiSelection")==0)
+                                        this->Osci.write(this->StateSetCommands[ID] + "\"" + _data.GetGuiSelection().first + "\"'",ID);
+                                else
+                                        this->Osci.write(this->StateSetCommands[ID] + _data.GetString() + "'",ID);
+
+                                this->m_data[ID].SetDataTimeOut(_data.GetDataRaw(), ID, GetMessenger());
+                            }
                         }
-                        else
-                        {
-                                this->Osci.write(this->StateSetCommands[ID] + _data.GetString() + "'",ID);
-                        }
-                        this->m_data[ID].SetDataTimeOut(_data.GetDataRaw(), ID, GetMessenger());
-                        //this->MessageSender("set", ID, _data);
                     }
                 }
             }
@@ -150,26 +159,12 @@ void WorkClass::process()
                     QString TDate = States[i];
                     InterfaceData _data = this->m_data[StateIds[i]];
 
-                    _data.SetDataKeepType(TDate);
-
-
-                    if(_data.GetDataType().compare("GuiSelection")==0)
-                    {
-                        auto tmp = this->m_data[StateIds[i]].GetGuiSelection();
-                        //tmp.first = States[i];
-                        //_data.SetData(tmp);
-                    }
-                    //else
-
+                    _data.SetDataKeepType(TDate);                 
                     if(_data.GetDataRaw() != this->m_data[StateIds[i]].GetDataRaw())
                     {
 
-                        this->m_data[StateIds[i]].SetDataRaw(_data.GetDataRaw());
-                        if(_data.GetDataType().compare("GuiSelection")==0)
-                        {
-                            auto tmp = this->m_data[StateIds[i]].GetGuiSelection();
-                        }
-                         this->MessageSender("set", StateIds[i], _data);
+                        this->m_data[StateIds[i]].SetDataRaw(_data.GetDataRaw());          
+                        this->MessageSender("set", StateIds[i], _data);
                     }
                 }
             }
@@ -187,10 +182,12 @@ void WorkClass::process()
 
         if(ReadStreams)
         {
-            ChannelReader.ReadChannel(1);
-            ChannelReader.ReadChannel(2);
-            ChannelReader.ReadChannel(3);
-            ChannelReader.ReadChannel(4);
+            int Channel = 1;
+            while(m_data.find(DeviceName + "::Channel::C"+ QString::number(Channel) +"::State") != m_data.end())
+            {
+                ChannelReader.ReadChannel(Channel);
+                Channel++;
+            }
             QString CounterID = DeviceName + "::ChannelRead::Counter";
             uint32_t tmp = m_data[CounterID].GetUInt32_tData();
             tmp++;

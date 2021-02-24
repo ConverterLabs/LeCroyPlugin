@@ -55,7 +55,7 @@ public:
     void write(QString command, QString logMsg);
     QStringList read(QString command, QString logMsg);
     std::vector<unsigned char> readbin(QString command, int size);
-
+    QStringList CheckStates(QStringList CommandList);
     int GetStatus() { return status;}
 
 

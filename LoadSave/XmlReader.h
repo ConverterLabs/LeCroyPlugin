@@ -30,8 +30,7 @@ class XmlReader: public QObject
 {
    Q_OBJECT
 public:
-    XmlReader(QObject *parent ,MessengerClass & Messenger_, std::map<QString, DataStorage> &m_data_, QString DeviceName_,    QStringList &StateIds,    QStringList &StateRequests,    QMap<QString, QString> &StateSetCommands);
-    bool read(QString path);
+    XmlReader(QObject *parent ,MessengerClass & Messenger_, std::map<QString, DataStorage> &m_data_, QString DeviceName_,    QStringList &StateIds,    QStringList &StateRequests,    QMap<QString, QString> &StateSetCommands);    bool read(QString path);
     QString errorString() { return QString();};
 
     QString GetIP(){return IP;};
@@ -47,11 +46,12 @@ private:
     void readVisa();
     void readVisaConnection();
 
-    void ReadDouble(bool ReadOnly);
-    void ReadBoolean(bool ReadOnly);
-    void ReadGuiSelection(bool ReadOnly);
-    void ReadString(bool ReadOnly);
-    void ReadInt(bool ReadOnly);
+    void ReadDouble(bool ReadOnly, bool WriteOnly);
+    void ReadBoolean(bool ReadOnly, bool WriteOnly);
+    void ReadGuiSelection(bool ReadOnly, bool WriteOnly);
+    void ReadString(bool ReadOnly, bool WriteOnly);
+    void ReadInt(bool ReadOnly, bool WriteOnly);
+    void AddState(QString read_ID, QString read_Command,  InterfaceData data, bool ReadOnly, bool WriteOnly);
 
     QString DeviceName;
 
@@ -63,6 +63,4 @@ private:
     QMap<QString, QString> &StateSetCommands;
     std::map<QString, DataStorage> &m_data;
 
-
 };
-

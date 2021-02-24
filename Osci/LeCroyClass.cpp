@@ -95,7 +95,6 @@ bool LeCroy::CloseConnection()
     else{
         return  true;
     }
-
 }
 
 
@@ -103,6 +102,8 @@ LeCroy::~LeCroy()
 {
 
 }
+
+
 
 QStringList LeCroy::read(QString command, QString logMsg)
 {
@@ -134,6 +135,23 @@ QStringList LeCroy::read(QString command, QString logMsg)
     return AnswerParts;
 }
 
+QStringList LeCroy::CheckStates(QStringList CommandList)
+{
+    QString  logMsg = "";
+    QStringList ErrorCommands;
+
+    for(auto itt : CommandList)
+    {
+        QStringList Answers = read(itt,logMsg);
+        if(Answers[0].contains("VBS Object doesn't support this property or method"))
+        {
+            ErrorCommands.push_back(itt);
+        }
+    }
+
+    return ErrorCommands;
+}
+
 QStringList LeCroy::ReadState(QStringList CommandList)
 {
     QString  command;
@@ -142,7 +160,7 @@ QStringList LeCroy::ReadState(QStringList CommandList)
         command.append(CommandList[i]);
     }
 
-    QString  logMsg = "Viewing channel C1";
+    QString  logMsg = "";
     QStringList Answers = read(command,logMsg);
     try
     {
@@ -167,8 +185,6 @@ void LeCroy::write(QString command, QString logMsg)
         qDebug()  << logMsg << "failed";
         qDebug()  << "VISA error code:" << status;
     }
-
-
 }
 
 std::vector<unsigned char> LeCroy::readbin(QString command, int size)
@@ -179,7 +195,6 @@ std::vector<unsigned char> LeCroy::readbin(QString command, int size)
         qDebug() << "Sending command failed";
         qDebug()  << "VISA error code:" << status;
     }
-
 
     std::vector<unsigned char> buffer;
     buffer.resize(220e6);
