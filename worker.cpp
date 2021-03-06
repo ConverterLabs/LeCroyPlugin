@@ -282,6 +282,8 @@ void WorkClass::MessageReceiver(const QString &Command, const QString &ID, Inter
     {
         ParseSetCommand(ID,Data);
     }
+    else
+        emit MessageSender(Command,ID,Data);
     return;
 }
 
