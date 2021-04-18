@@ -68,10 +68,12 @@ void CreateSymbols::PublishParameters()
     PublishState(DeviceName + "::ReadChannels");
     PublishInt(DeviceName + "::ChannelRead::Counter");
 
-    PublishVector(DeviceName + "::Buffered::C1");
-    PublishVector(DeviceName + "::Buffered::C2");
-    PublishVector(DeviceName + "::Buffered::C3");
-    PublishVector(DeviceName + "::Buffered::C4");
+    int Channel = 1;
+    while(m_data.find(DeviceName + "::Channel::C"+ QString::number(Channel) +"::State") != m_data.end())
+    {
+        PublishVector(DeviceName + "::Buffered::C" + QString::number(Channel));
+        Channel++;
+    }
 
     InterfaceData Data;
     Data.SetData(0);
