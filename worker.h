@@ -93,6 +93,7 @@ private:
     bool Error = 0;
 
     bool ReadStreams = false;
+    bool Calibrate = false;
 
     bool XmlRead = false;
     QStringList StateIds;

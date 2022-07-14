@@ -66,6 +66,9 @@ void CreateSymbols::PublishParameters()
 {
 
     PublishState(DeviceName + "::ReadChannels");
+    PublishState(DeviceName + "::Calibrate");
+
+
     PublishInt(DeviceName + "::ChannelRead::Counter");
 
     int Channel = 1;

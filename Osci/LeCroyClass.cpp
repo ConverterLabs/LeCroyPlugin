@@ -25,6 +25,7 @@
 #include <string>
 #include <QDebug>
 
+QMutex LeCroy::mutex;
 
 //#include <QVector>
 
@@ -61,7 +62,6 @@ int LeCroy::Connect(QString IP)
 
 int LeCroy::Calibrate()
 {
-
     status = viSetAttribute(session, VI_ATTR_TMO_VALUE, 15000);
     if (status < VI_SUCCESS) {
         std::cout << "Setting time out failed";
@@ -72,10 +72,11 @@ int LeCroy::Calibrate()
     read(command, logMsg);
 
     std::cout << "Setting time out to 0.5 seconds";
-    status = viSetAttribute(session, VI_ATTR_TMO_VALUE, 500);
+    status = viSetAttribute(session, VI_ATTR_TMO_VALUE, 1000);
     if (status < VI_SUCCESS) {
         std::cout << "Setting time out failed";
     }
+
 
     return 0;
 }
@@ -110,6 +111,7 @@ QStringList LeCroy::read(QString command, QString logMsg)
     // creating log message for debugging
 
 
+    mutex.lock();
 
     status = viWrite(session, (ViBuf)command.toStdString().c_str(), command.length(), &retCount);
     if (status < VI_SUCCESS)
@@ -123,12 +125,16 @@ QStringList LeCroy::read(QString command, QString logMsg)
     for (int i =0; i < sizeof(buffer); i++) buffer[i] = ' ';
 
     status = viRead(session, (ViPBuf)buffer, (ViUInt32)sizeof(buffer), &retCount);
+    mutex.unlock();
+
+
     if (status < VI_SUCCESS) {
         qDebug()  << logMsg << "failed";
         qDebug()  << "VISA error code:" << status;
     }
     QString Answer(QString::fromLocal8Bit((const char*) buffer,retCount));
     auto AnswerParts = Answer.simplified().split(";");
+
 
 
 
@@ -180,8 +186,10 @@ QStringList LeCroy::ReadState(QStringList CommandList)
 
 void LeCroy::write(QString command, QString logMsg)
 {
+    mutex.lock();
     status = viWrite(session, (ViBuf)command.toStdString().c_str(), command.length(), &retCount);
-    if (status < VI_SUCCESS) {
+    mutex.unlock();
+     if (status < VI_SUCCESS) {
         qDebug()  << logMsg << "failed";
         qDebug()  << "VISA error code:" << status;
     }
@@ -189,6 +197,8 @@ void LeCroy::write(QString command, QString logMsg)
 
 std::vector<unsigned char> LeCroy::readbin(QString command, int size)
 {
+    mutex.lock();
+
     status = viWrite(session, (ViBuf)command.toStdString().c_str(), command.length(), &retCount);
     if (status < VI_SUCCESS)
     {
@@ -201,6 +211,9 @@ std::vector<unsigned char> LeCroy::readbin(QString command, int size)
     for (int i =0; i< buffer.size(); i++) buffer[i] = ' ';
 
     status = viRead(session, (ViPBuf)&(buffer[0]), (ViUInt32)buffer.size(), &retCount);
+
+    mutex.unlock();
+
     if (status < VI_SUCCESS) {
 
         qDebug()  << "VISA error code:" << status;

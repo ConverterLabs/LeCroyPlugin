@@ -45,6 +45,7 @@
 
 #include <QDebug>
 #include <functional>
+#include <QElapsedTimer>
 
 #include "Symbols/createsymbols.h"
 #include "LoadSave/XmlReader.h"
@@ -116,7 +117,7 @@ void WorkClass::process()
     // First Loop
     while(!Abort())
     {
-        QTime CycleTimer;
+        QElapsedTimer CycleTimer;
         CycleTimer.start();
 
         //Send States to Oszi
@@ -180,8 +181,11 @@ void WorkClass::process()
         }
         LastTriggerMode = this->m_data[DeviceName + "::Trigger::Mode"].GetString();
 
+
+
         if(ReadStreams)
         {
+            ReadStreams = 0;
             int Channel = 1;
             while(m_data.find(DeviceName + "::Channel::C"+ QString::number(Channel) +"::State") != m_data.end())
             {
@@ -197,7 +201,12 @@ void WorkClass::process()
 
         }
 
-
+        if(this->Calibrate)
+        {
+            this->Calibrate = 0;
+            this->Osci.Calibrate();
+        }
+        QCoreApplication::processEvents();
        //always use a sleep in this loop or the cpu load will be massive
        while( CycleTimer.elapsed() < 100)
        {
@@ -235,7 +244,19 @@ void WorkClass::ParseSetCommand(const QString ID,InterfaceData  _data)
     else
     {
         if(ID == DeviceName + "::ReadChannels")
-            this->ReadStreams = 1;
+        {
+            if(_data.GetBool())
+            {
+                ReadStreams = 1;
+            }
+        }
+        if(ID == DeviceName + "::Calibrate")
+        {
+            if(_data.GetBool())
+            {
+                this->Calibrate = 1;
+            }
+        }
     }
 }
 

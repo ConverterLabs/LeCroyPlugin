@@ -49,7 +49,7 @@ bool XmlReader::read(QString Path)
     reader.setDevice(&file);
 
     if (reader.readNextStartElement()) {
-        if (reader.name() == "LEDevice")
+        if (reader.name() == QString("LEDevice"))
             readLEDevice();
         else
         {
@@ -79,9 +79,9 @@ bool XmlReader::read(QString Path)
 void XmlReader::readLEDevice()
 {
     while(reader.readNextStartElement()){
-       if(reader.name() == "Connection")
+       if(reader.name() == QString("Connection"))
             readConnection();
-       else if(reader.name() == "Visa")
+       else if(reader.name() == QString("Visa"))
             readVisa();
        else
            reader.skipCurrentElement();
@@ -92,7 +92,7 @@ void XmlReader::readVisa()
 {
 
     while(reader.readNextStartElement()){
-       if(reader.name() == "Connection")
+       if(reader.name() == QString("Connection"))
             readVisaConnection();
        else
            reader.skipCurrentElement();
@@ -113,9 +113,9 @@ void XmlReader::ReadDouble(bool ReadOnly, bool WriteOnly)
     QString read_Command;
 
     while(reader.readNextStartElement()){
-       if(reader.name() == "ID")
+       if(reader.name() == QString("ID"))
             read_ID = reader.readElementText().trimmed();
-       else if(reader.name() == "Command")
+       else if(reader.name() == QString("Command"))
             read_Command = reader.readElementText().trimmed();
        else
            reader.skipCurrentElement();
@@ -140,9 +140,9 @@ void XmlReader::ReadInt(bool ReadOnly, bool WriteOnly)
     QString read_Command;
 
     while(reader.readNextStartElement()){
-       if(reader.name() == "ID")
+       if(reader.name() == QString("ID"))
             read_ID = reader.readElementText().trimmed();
-       else if(reader.name() == "Command")
+       else if(reader.name() == QString("Command"))
             read_Command = reader.readElementText().trimmed();
        else
            reader.skipCurrentElement();
@@ -167,9 +167,9 @@ void XmlReader::ReadString(bool ReadOnly, bool WriteOnly)
     QString read_Command;
 
     while(reader.readNextStartElement()){
-       if(reader.name() == "ID")
+       if(reader.name() == QString("ID"))
             read_ID = reader.readElementText().trimmed();
-       else if(reader.name() == "Command")
+       else if(reader.name() == QString("Command"))
             read_Command = reader.readElementText().trimmed();
        else
            reader.skipCurrentElement();
@@ -193,9 +193,9 @@ void XmlReader::ReadBoolean(bool ReadOnly, bool WriteOnly)
     QString read_Command;
 
     while(reader.readNextStartElement()){
-       if(reader.name() == "ID")
+       if(reader.name() == QString("ID"))
             read_ID = reader.readElementText().trimmed();
-       else if(reader.name() == "Command")
+       else if(reader.name() == QString("Command"))
             read_Command = reader.readElementText().trimmed();
        else
            reader.skipCurrentElement();
@@ -221,11 +221,11 @@ void XmlReader::ReadGuiSelection(bool ReadOnly, bool WriteOnly)
     QString read_Command;
 
     while(reader.readNextStartElement()){
-       if(reader.name() == "ID")
+       if(reader.name() == QString("ID"))
             read_ID = reader.readElementText().trimmed();
-       else if(reader.name() == "Command")
+       else if(reader.name() == QString("Command"))
             read_Command = reader.readElementText().trimmed();
-       else if(reader.name() == "Selection")
+       else if(reader.name() == QString("Selection"))
             Selection.push_back(reader.readElementText().trimmed());
        else
            reader.skipCurrentElement();

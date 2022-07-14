@@ -23,6 +23,7 @@
 #include "../LabAnalyser/plugins/platforminterface.h"
 #include "../LabAnalyser/plugins/InterfaceDataType.h"
 #include <QTimer>
+#include <QAction>
 #include "../Messenger/messengerclass.h"
 
 

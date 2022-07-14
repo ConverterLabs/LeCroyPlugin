@@ -31,8 +31,10 @@ QT             += widgets
 OBJECTS_DIR=$$builddir
 DESTDIR=$$builddir
 
-INCLUDEPATH += C:/libraries/boost_1_59_0
+INCLUDEPATH += C:/msys64/mingw64/include/
 INCLUDEPATH += $$PWD/../LeCroyPlugin/include
+INCLUDEPATH += C:/cpp/libs/VISA/WinNT/Include
+
 
 DEFINES +=  LeCroyPlugin_LIBRARY
 DEFINES +=  WIN32_LEAN_AND_MEAN
@@ -61,16 +63,16 @@ HEADERS += \
             Osci/LeCroyClass.h
 
 
-LIBS += -LC:/cpp/GitHub/LeCroyPlugin/Lib_x64/msc -lvisa64
 
-LIBS += -LC:/libraries/boost_1_59_0/boost-lib/lib -llibboost_system-mgw73-mt-1_59
-LIBS += -LC:/libraries/boost_1_59_0/boost-lib/lib -llibboost_thread-mgw73-mt-1_59
+LIBS += -LC:/msys64/mingw64/lib
+#LIBS += -LC:/msys64/mingw64/lib -llibboost_thread-mt
 LIBS += -lws2_32
+LIBS += -LC:/cpp/libs/VISA/WinNT/Lib_x64/msc -lvisa64
 
 
 TARGET          = $$qtLibraryTarget(LeCroyPlugin)
-Debug:DESTDIR         = ../../plugins
-Release:DESTDIR         = C:/LabAnalyser
+Debug:DESTDIR         = ../plugins
+Release:DESTDIR         = C:/LA2
 
 #QMAKE_CXXFLAGS_RELEASE += -O1
 QMAKE_CXXFLAGS_RELEASE -= -O

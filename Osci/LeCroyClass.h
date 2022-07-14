@@ -40,7 +40,7 @@
 #include <QStringList>
 
 #include <QBuffer>
-
+#include <QMutex>
 
 class LeCroy
 {
@@ -68,7 +68,7 @@ private:
     ViSession session;          // connection to device
     ViStatus status;            // communication status
     ViUInt32 retCount;          // retur count from string I/O
-
+    static QMutex mutex;
 
 };
 
